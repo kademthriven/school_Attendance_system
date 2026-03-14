@@ -1,0 +1,25 @@
+body{
+background:#f4f6f9;
+}
+
+.top-bar{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.student-row{
+display:flex;
+justify-content:space-between;
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+.student-name{
+width:200px;
+}
+
+.status-icon{
+width:40px;
+text-align:center;
+}
