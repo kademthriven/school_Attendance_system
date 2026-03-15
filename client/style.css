@@ -1,0 +1,17 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.present {
+  color: #198754; /* Bootstrap green */
+  font-weight: 600;
+}
+
+.absent {
+  color: #dc3545; /* Bootstrap red */
+  font-weight: 600;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
