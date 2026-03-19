@@ -4,15 +4,22 @@ const attendanceArea = document.getElementById('attendanceArea');
 
 searchBtn.addEventListener('click', async () => {
   const date = document.getElementById('dateInput').value;
+  // ✅ Validation
+  if (!date) {
+    alert("Please select a date");
+    return;
+  }
+
   const res = await fetch(`http://localhost:3000/api/attendance/${date}`);
   const data = await res.json();
 
   attendanceArea.innerHTML = '';
 
+  // ✅ If attendance already exists
   if (data.exists) {
-    // ✅ Show attendance status (already marked)
     const table = document.createElement('table');
     table.className = 'table table-bordered table-striped';
+
     table.innerHTML = `
       <thead class="table-light">
         <tr>
@@ -24,19 +31,23 @@ searchBtn.addEventListener('click', async () => {
         ${data.records.map(r => `
           <tr>
             <td>${r.name}</td>
-            <td>${r.status === 'present' 
-                ? '<span class="badge bg-success">Present</span>' 
-                : '<span class="badge bg-danger">Absent</span>'}</td>
+            <td>
+              ${r.status === 'present'
+                ? '<span class="badge bg-success">Present</span>'
+                : '<span class="badge bg-danger">Absent</span>'}
+            </td>
           </tr>
         `).join('')}
       </tbody>
     `;
+
     attendanceArea.appendChild(table);
 
   } else {
-    // 📝 Show marking form (radio buttons)
+    // 📝 Show marking form
     const table = document.createElement('table');
     table.className = 'table table-bordered';
+
     table.innerHTML = `
       <thead class="table-light">
         <tr>
@@ -47,14 +58,14 @@ searchBtn.addEventListener('click', async () => {
       <tbody>
         ${data.students.map(s => `
           <tr>
-            <td>${s}</td>
+            <td>${s.name}</td>
             <td>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="${s}" value="present">
+                <input class="form-check-input" type="radio" name="student-${s.id}" value="present">
                 <label class="form-check-label">Present</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="${s}" value="absent">
+                <input class="form-check-input" type="radio" name="student-${s.id}" value="absent">
                 <label class="form-check-label">Absent</label>
               </div>
             </td>
@@ -62,25 +73,33 @@ searchBtn.addEventListener('click', async () => {
         `).join('')}
       </tbody>
     `;
+
     attendanceArea.appendChild(table);
 
+    // ✅ Submit button
     const btn = document.createElement('button');
     btn.className = 'btn btn-warning mt-3';
     btn.textContent = 'Mark Attendance';
+
     btn.onclick = async () => {
       let missing = [];
 
       const records = data.students.map(s => {
-        const selected = document.querySelector(`input[name="${s}"]:checked`);
+        const selected = document.querySelector(`input[name="student-${s.id}"]:checked`);
+
         if (!selected) {
-          missing.push(s); // track students with no selection
+          missing.push(s.name);
         }
-        return { name: s, status: selected ? selected.value : null };
+
+        return {
+          studentId: s.id,
+          status: selected ? selected.value : null
+        };
       });
 
       if (missing.length > 0) {
         alert(`You missed marking attendance for: ${missing.join(", ")}`);
-        return; // stop submission until all are marked
+        return;
       }
 
       await fetch(`http://localhost:3000/api/attendance/${date}`, {
@@ -89,8 +108,9 @@ searchBtn.addEventListener('click', async () => {
         body: JSON.stringify({ records })
       });
 
-      searchBtn.click(); // reload to show updated status
+      searchBtn.click(); // reload
     };
+
     attendanceArea.appendChild(btn);
   }
 });
@@ -101,8 +121,10 @@ reportBtn.addEventListener('click', async () => {
   const data = await res.json();
 
   attendanceArea.innerHTML = '';
+
   const table = document.createElement('table');
   table.className = 'table table-bordered table-striped';
+
   table.innerHTML = `
     <thead class="table-light">
       <tr>
@@ -119,13 +141,14 @@ reportBtn.addEventListener('click', async () => {
           <td>${r.attended}</td>
           <td>${r.total}</td>
           <td>
-            ${r.percentage >= 75 
-              ? `<span class="badge bg-success">${r.percentage}%</span>` 
+            ${r.percentage >= 75
+              ? `<span class="badge bg-success">${r.percentage}%</span>`
               : `<span class="badge bg-danger">${r.percentage}%</span>`}
           </td>
         </tr>
       `).join('')}
     </tbody>
   `;
+
   attendanceArea.appendChild(table);
 });

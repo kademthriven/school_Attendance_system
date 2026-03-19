@@ -1,17 +1,41 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa; /* light background */
 }
 
+/* Status styles (optional if using badges) */
 .present {
-  color: #198754; /* Bootstrap green */
+  color: #198754;
   font-weight: 600;
 }
 
 .absent {
-  color: #dc3545; /* Bootstrap red */
+  color: #dc3545;
   font-weight: 600;
 }
 
+/* Table styling */
 .table td, .table th {
   vertical-align: middle;
+  text-align: center;
+}
+
+/* Card styling */
+.card {
+  border-radius: 10px;
+}
+
+/* Button hover effect */
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Attendance area spacing */
+#attendanceArea {
+  min-height: 150px;
+}
+
+/* Smooth UI feel */
+button, .table {
+  transition: all 0.2s ease-in-out;
 }

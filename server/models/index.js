@@ -8,15 +8,21 @@ const sequelize = new Sequelize(
   {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    pool: dbConfig.pool,
     logging: false
   }
 );
 
 const db = {};
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+// Models
+db.Student = require('./student')(sequelize, DataTypes);
 db.Attendance = require('./attendance')(sequelize, DataTypes);
+
+// Associations
+db.Student.hasMany(db.Attendance, { foreignKey: 'studentId' });
+db.Attendance.belongsTo(db.Student, { foreignKey: 'studentId' });
 
 module.exports = db;
