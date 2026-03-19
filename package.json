@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "school_attedance_system",
   "version": "1.0.0",
   "description": "",
@@ -7,28 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/app.js"
-=======
-  "name": "student_attendance_system",
-  "version": "1.0.0",
-  "description": "",
-  "main": "backend/server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js"
->>>>>>> dbabeca0669a95bec7b943f1782c5bddcb7eab42
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-<<<<<<< HEAD
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
-=======
-    "body-parser": "^2.2.2",
-    "cors": "^2.8.6",
->>>>>>> dbabeca0669a95bec7b943f1782c5bddcb7eab42
     "express": "^5.2.1",
     "mysql2": "^3.19.1",
     "sequelize": "^6.37.8"
